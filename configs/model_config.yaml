@@ -1,0 +1,56 @@
+# 数据配置
+data:
+  train_size: 0.8
+  random_state: 42
+  target_column: "default.payment.next.month"
+  categorical_features:
+    - "SEX"
+    - "EDUCATION"
+    - "MARRIAGE"
+  numerical_features:
+    - "LIMIT_BAL"
+    - "AGE"
+    - "PAY_0"
+    - "PAY_2"
+    - "PAY_3"
+    - "PAY_4"
+    - "PAY_5"
+    - "PAY_6"
+    - "BILL_AMT1"
+    - "BILL_AMT2"
+    - "BILL_AMT3"
+    - "BILL_AMT4"
+    - "BILL_AMT5"
+    - "BILL_AMT6"
+    - "PAY_AMT1"
+    - "PAY_AMT2"
+    - "PAY_AMT3"
+    - "PAY_AMT4"
+    - "PAY_AMT5"
+    - "PAY_AMT6"
+
+# 模型配置
+model:
+  name: "xgboost"
+  params:
+    max_depth: 6
+    learning_rate: 0.1
+    n_estimators: 100
+    objective: "binary:logistic"
+    random_state: 42
+
+# 训练配置
+training:
+  batch_size: 32
+  epochs: 100
+  early_stopping_rounds: 10
+  validation_split: 0.2
+
+# Weights & Biases配置
+wandb:
+  project: "credit-card-default-prediction"
+  entity: null  # 设置为您的W&B用户名
+  tags:
+    - "credit-card"
+    - "default-prediction"
+  notes: "XGBoost model for credit card default prediction" 

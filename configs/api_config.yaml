@@ -1,0 +1,27 @@
+# API配置
+api:
+  title: "Credit Card Default Prediction API"
+  description: "API for predicting credit card default probability"
+  version: "1.0.0"
+  host: "0.0.0.0"
+  port: 8000
+  debug: true
+  reload: true
+
+# 模型服务配置
+model_service:
+  model_path: "models/xgboost_model.pkl"
+  scaler_path: "models/scaler.pkl"
+  threshold: 0.5
+
+# 日志配置
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/api.log"
+
+# 安全配置
+security:
+  api_key_header: "X-API-Key"
+  rate_limit:
+    requests_per_minute: 60 

@@ -1,0 +1,24 @@
+-r requirements.txt
+
+# 测试
+pytest>=6.2.5
+pytest-cov>=2.12.1
+pytest-mock>=3.6.1
+
+# 代码质量
+black>=21.7b0
+flake8>=3.9.2
+isort>=5.9.3
+mypy>=0.910
+
+# 类型检查
+types-PyYAML>=5.4.3
+types-requests>=2.25.9
+
+# 文档
+sphinx>=4.1.2
+sphinx-rtd-theme>=0.5.2
+
+# 开发工具
+pre-commit>=2.15.0
+jupyterlab>=3.1.9 
