@@ -62,30 +62,133 @@ pip install -r requirements.txt
 pip install -r requirements-dev.txt  # 开发环境
 ```
 
-4. 设置Weights & Biases：
-```bash
-wandb login
-```
+## 常见问题
+
+### Q: 模型文件未找到
+**A**: 确保先运行训练脚本生成模型文件
+
+### Q: W&B登录失败
+**A**: 
+1. 检查API密钥是否正确
+2. 确保网络连接正常
+3. 可以先不使用W&B：`python train_model.py`
+
+### Q: API启动失败
+**A**: 检查8000端口是否被占用，或修改端口号
+
+### Q: 内存不足
+**A**: 可以在配置文件中减少数据样本数量
 
 ## 使用说明
 
-### 模型训练
+### 方式1: 快速开始（不使用W&B）
 
-1. 数据预处理：
+适合新手快速体验项目功能：
+
 ```bash
-python src/data/data_loader.py
+# 1. 安装依赖
+pip install -r requirements.txt
+
+# 2. 训练模型
+python train_model.py
+
+# 3. 启动API服务
+python start_api.py
 ```
 
-2. 模型训练：
+### 方式2: 完整版（使用W&B实验跟踪）
+
+推荐用于正式开发和实验管理：
+
+#### 2.1 配置W&B
+
+1. **注册W&B账户**：
+   - 访问 https://wandb.ai/ 注册免费账户
+
+2. **获取API密钥**：
+   - 登录后访问 https://wandb.ai/authorize
+   - 复制您的API密钥
+
+3. **登录W&B**：
+   ```bash
+   wandb login
+   # 粘贴您的API密钥
+   ```
+
+4. **修改配置文件**：
+   编辑 `configs/model_config.yaml`，设置您的W&B用户名：
+   ```yaml
+   wandb:
+     project: "credit-card-default-prediction"
+     entity: "your-username"  # 替换为您的W&B用户名
+   ```
+
+#### 2.2 运行完整训练
+
 ```bash
-python src/models/train.py
+# 使用W&B进行实验跟踪
+python train_model.py --use-wandb
+
+# 或者直接运行W&B专用脚本
+python train_with_wandb.py
 ```
 
-### API服务
+#### 2.3 W&B功能
 
-启动FastAPI服务：
+训练完成后，您可以在W&B dashboard中查看：
+- 📊 **实验指标**：accuracy、F1-score、ROC-AUC等
+- 📈 **损失曲线**：训练过程可视化
+- 🎯 **模型对比**：不同实验的性能对比
+- 💾 **模型Artifacts**：自动保存和版本管理
+- 🔄 **实验复现**：完整的代码和环境记录
+
+### API服务使用
+
 ```bash
-uvicorn src.api.main:app --reload
+# 启动API服务
+python start_api.py
+```
+
+服务启动后可访问：
+- **API文档**: http://localhost:8000/docs
+- **健康检查**: http://localhost:8000/health
+
+#### API测试示例
+
+```bash
+# 健康检查
+curl http://localhost:8000/health
+
+# 单个预测
+curl -X POST "http://localhost:8000/predict" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "features": {
+         "LIMIT_BAL": 20000,
+         "SEX": 2,
+         "EDUCATION": 2,
+         "MARRIAGE": 1,
+         "AGE": 24,
+         "PAY_0": 2,
+         "PAY_2": 2,
+         "PAY_3": -1,
+         "PAY_4": -1,
+         "PAY_5": -2,
+         "PAY_6": -2,
+         "BILL_AMT1": 3913,
+         "BILL_AMT2": 3102,
+         "BILL_AMT3": 689,
+         "BILL_AMT4": 0,
+         "BILL_AMT5": 0,
+         "BILL_AMT6": 0,
+         "PAY_AMT1": 0,
+         "PAY_AMT2": 689,
+         "PAY_AMT3": 0,
+         "PAY_AMT4": 0,
+         "PAY_AMT5": 0,
+         "PAY_AMT6": 0
+       }
+     }'
 ```
 
 ## 项目特点
